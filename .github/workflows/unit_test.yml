@@ -12,12 +12,7 @@ jobs:
     
     steps:
     - name: clone
-      uses: actions/checkout
-
-    - name: setup_cmake
-      uses: actions/setup-cmake
-      with:
-        cmake-version: '3.2'
+      uses: actions/checkout@v3
     
     - name: setup_gtest
       run: |
