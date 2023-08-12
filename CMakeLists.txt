@@ -22,8 +22,10 @@ if(BUILD_TESTS)
     find_package(GTest REQUIRED)
     # Create test executable.
     add_executable(${PROJECT_NAME}_test
-        test/main.cpp)
+        test/main.cpp
+        test/configuration.cpp)
     # Link test executable.
     target_link_libraries(${PROJECT_NAME}_test
+        ${PROJECT_NAME}
         GTest::gtest)
 endif()
