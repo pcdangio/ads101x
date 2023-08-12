@@ -1,0 +1,34 @@
+name: unit_test
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  unit_test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: clone
+      uses: actions/checkout@v3
+    
+    - name: setup_gtest
+      run: sudo apt install libgtest-dev
+      
+    - name: configure
+      run: |
+        mkdir build
+        cd build
+        cmake -DBUILD_TESTS=ON ..
+    
+    - name: build
+      run: |
+        cd build
+        make
+
+    - name: test
+      run: |
+        cd build
+        ./ads101x_test
