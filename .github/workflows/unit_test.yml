@@ -1,0 +1,45 @@
+name: unit_test
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  unit_test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: clone
+      uses: actions/checkout
+
+    - name: setup_cmake
+      uses: actions/setup-cmake
+      with:
+        cmake-version: '3.2'
+    
+    - name: setup_gtest
+      run: |
+        apt install libgtest-dev
+        mkdir /usr/src/gtest/build
+        cd /usr/src/gtest/build
+        cmake ..
+        make
+        make install
+      
+    - name: configure
+      run: |
+        mkdir build
+        cd build
+        cmake -DBUILD_TESTS=ON ..
+    
+    - name: build
+      run: |
+        cd build
+        make
+
+    - name: test
+      run: .|
+        cd build
+        ./ads101x_test
