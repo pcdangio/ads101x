@@ -65,3 +65,18 @@ TEST(configuration, read)
     EXPECT_EQ(config.comparator_latch, ads101x::comparator_latch::NONLATCHING);
     EXPECT_EQ(config.comparator_queue, ads101x::comparator_queue::DISABLED);
 }
+
+TEST(configuration, write)
+{
+    // Create default-constructed configuration.
+    ads101x::configuration config;
+
+    // Set operation field to match default startup value for ADS101X.
+    config.operation = ads101x::operation::CONVERT;
+
+    // Write to register value.
+    uint16_t config_register = config.write();
+
+    // Verify register value.
+    EXPECT_EQ(config_register, 0x8583);
+}
