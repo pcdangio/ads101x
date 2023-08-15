@@ -4,23 +4,15 @@
 // gtest
 #include <gtest/gtest.h>
 
+// CONSTRUCTORS
 TEST(configuration, default_constructor)
 {
     // Create default-constructed configuration.
     ads101x::configuration config;
 
-    // Verify fields.
-    EXPECT_EQ(config.operation, ads101x::operation::IDLE);
-    EXPECT_EQ(config.multiplexer, ads101x::multiplexer::AIN0_AIN1);
-    EXPECT_EQ(config.fsr, ads101x::fsr::FSR_2_048);
-    EXPECT_EQ(config.mode, ads101x::mode::MODE_SINGLESHOT);
-    EXPECT_EQ(config.data_rate, ads101x::data_rate::SPS_1600);
-    EXPECT_EQ(config.comparator_mode, ads101x::comparator_mode::TRADITIONAL);
-    EXPECT_EQ(config.comparator_polarity, ads101x::comparator_polarity::ACTIVE_LOW);
-    EXPECT_EQ(config.comparator_latch, ads101x::comparator_latch::NONLATCHING);
-    EXPECT_EQ(config.comparator_queue, ads101x::comparator_queue::DISABLED);
+    // Verify bitfield.
+    EXPECT_EQ(config.bitfield(), 0x0583);
 }
-
 TEST(configuration, read_constructor)
 {
     // Create simulated CONFIG register value.
@@ -30,53 +22,125 @@ TEST(configuration, read_constructor)
     // Create read-constructed configuration.
     ads101x::configuration config(config_register);
 
-    // Verify fields.
-    EXPECT_EQ(config.operation, ads101x::operation::CONVERT);
-    EXPECT_EQ(config.multiplexer, ads101x::multiplexer::AIN0_AIN1);
-    EXPECT_EQ(config.fsr, ads101x::fsr::FSR_2_048);
-    EXPECT_EQ(config.mode, ads101x::mode::MODE_SINGLESHOT);
-    EXPECT_EQ(config.data_rate, ads101x::data_rate::SPS_1600);
-    EXPECT_EQ(config.comparator_mode, ads101x::comparator_mode::TRADITIONAL);
-    EXPECT_EQ(config.comparator_polarity, ads101x::comparator_polarity::ACTIVE_LOW);
-    EXPECT_EQ(config.comparator_latch, ads101x::comparator_latch::NONLATCHING);
-    EXPECT_EQ(config.comparator_queue, ads101x::comparator_queue::DISABLED);
+    // Verify bitfield.
+    EXPECT_EQ(config.bitfield(), config_register);
 }
 
-TEST(configuration, read)
+// PROPERTIES
+TEST(configuration, operation)
 {
-    // Create default-constructed configuration.
-    ads101x::configuration config;
+    // Create empty configuration.
+    ads101x::configuration config(0x0000);
 
-    // Create simulated CONFIG register value.
-    // NOTE: This is the default startup value for the ADS101X.
-    uint16_t config_register = 0x8583;
+    // Create non-zero value.
+    auto value = ads101x::configuration::operation::CONVERT;
 
-    // Read value into configuration.
-    config.read(config_register);
-
-    // Verify fields.
-    EXPECT_EQ(config.operation, ads101x::operation::CONVERT);
-    EXPECT_EQ(config.multiplexer, ads101x::multiplexer::AIN0_AIN1);
-    EXPECT_EQ(config.fsr, ads101x::fsr::FSR_2_048);
-    EXPECT_EQ(config.mode, ads101x::mode::MODE_SINGLESHOT);
-    EXPECT_EQ(config.data_rate, ads101x::data_rate::SPS_1600);
-    EXPECT_EQ(config.comparator_mode, ads101x::comparator_mode::TRADITIONAL);
-    EXPECT_EQ(config.comparator_polarity, ads101x::comparator_polarity::ACTIVE_LOW);
-    EXPECT_EQ(config.comparator_latch, ads101x::comparator_latch::NONLATCHING);
-    EXPECT_EQ(config.comparator_queue, ads101x::comparator_queue::DISABLED);
+    // Set value and test get/bitfield.
+    config.set_operation(value);
+    EXPECT_EQ(config.get_operation(), value);
+    EXPECT_EQ(config.bitfield(), static_cast<uint16_t>(value));
 }
-
-TEST(configuration, write)
+TEST(configuration, multiplexer)
 {
-    // Create default-constructed configuration.
-    ads101x::configuration config;
+    // Create empty configuration.
+    ads101x::configuration config(0x0000);
 
-    // Set operation field to match default startup value for ADS101X.
-    config.operation = ads101x::operation::CONVERT;
+    // Create non-zero value.
+    auto value = ads101x::configuration::multiplexer::AIN0_GND;
 
-    // Write to register value.
-    uint16_t config_register = config.write();
+    // Set value and test get/bitfield.
+    config.set_multiplexer(value);
+    EXPECT_EQ(config.get_multiplexer(), value);
+    EXPECT_EQ(config.bitfield(), static_cast<uint16_t>(value));
+}
+TEST(configuration, fsr)
+{
+    // Create empty configuration.
+    ads101x::configuration config(0x0000);
 
-    // Verify register value.
-    EXPECT_EQ(config_register, 0x8583);
+    // Create non-zero value.
+    auto value = ads101x::configuration::fsr::FSR_4_096;
+
+    // Set value and test get/bitfield.
+    config.set_fsr(value);
+    EXPECT_EQ(config.get_fsr(), value);
+    EXPECT_EQ(config.bitfield(), static_cast<uint16_t>(value));
+}
+TEST(configuration, mode)
+{
+    // Create empty configuration.
+    ads101x::configuration config(0x0000);
+
+    // Create non-zero value.
+    auto value = ads101x::configuration::mode::SINGLESHOT;
+
+    // Set value and test get/bitfield.
+    config.set_mode(value);
+    EXPECT_EQ(config.get_mode(), value);
+    EXPECT_EQ(config.bitfield(), static_cast<uint16_t>(value));
+}
+TEST(configuration, data_rate)
+{
+    // Create empty configuration.
+    ads101x::configuration config(0x0000);
+
+    // Create non-zero value.
+    auto value = ads101x::configuration::data_rate::SPS_3300;
+
+    // Set value and test get/bitfield.
+    config.set_data_rate(value);
+    EXPECT_EQ(config.get_data_rate(), value);
+    EXPECT_EQ(config.bitfield(), static_cast<uint16_t>(value));
+}
+TEST(configuration, comparator_mode)
+{
+    // Create empty configuration.
+    ads101x::configuration config(0x0000);
+
+    // Create non-zero value.
+    auto value = ads101x::configuration::comparator_mode::WINDOW;
+
+    // Set value and test get/bitfield.
+    config.set_comparator_mode(value);
+    EXPECT_EQ(config.get_comparator_mode(), value);
+    EXPECT_EQ(config.bitfield(), static_cast<uint16_t>(value));
+}
+TEST(configuration, comparator_polarity)
+{
+    // Create empty configuration.
+    ads101x::configuration config(0x0000);
+
+    // Create non-zero value.
+    auto value = ads101x::configuration::comparator_polarity::ACTIVE_HIGH;
+
+    // Set value and test get/bitfield.
+    config.set_comparator_polarity(value);
+    EXPECT_EQ(config.get_comparator_polarity(), value);
+    EXPECT_EQ(config.bitfield(), static_cast<uint16_t>(value));
+}
+TEST(configuration, comparator_latch)
+{
+    // Create empty configuration.
+    ads101x::configuration config(0x0000);
+
+    // Create non-zero value.
+    auto value = ads101x::configuration::comparator_latch::LATCHING;
+
+    // Set value and test get/bitfield.
+    config.set_comparator_latch(value);
+    EXPECT_EQ(config.get_comparator_latch(), value);
+    EXPECT_EQ(config.bitfield(), static_cast<uint16_t>(value));
+}
+TEST(configuration, comparator_queue)
+{
+    // Create empty configuration.
+    ads101x::configuration config(0x0000);
+
+    // Create non-zero value.
+    auto value = ads101x::configuration::comparator_queue::DISABLED;
+
+    // Set value and test get/bitfield.
+    config.set_comparator_queue(value);
+    EXPECT_EQ(config.get_comparator_queue(), value);
+    EXPECT_EQ(config.bitfield(), static_cast<uint16_t>(value));
 }
