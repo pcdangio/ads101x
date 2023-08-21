@@ -14,9 +14,6 @@ namespace ads101x {
 class driver
 {
 public:
-    // CONSTRUCTORS
-    ~driver();
-
     // CONTROL
     /// \brief Starts the driver by opening I2C communication with the ADS101X.
     /// \param i2c_bus The I2C bus to use for communication.
