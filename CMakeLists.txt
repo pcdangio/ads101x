@@ -8,7 +8,8 @@ project(ads101x
 # LIBRARY
 # Create library.
 add_library(${PROJECT_NAME} STATIC
-    src/configuration.cpp)
+    src/configuration.cpp
+    src/driver.cpp)
 # Specify include directories.
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include)
