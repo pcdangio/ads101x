@@ -8,7 +8,8 @@ project(ads101x
 # LIBRARY
 # Create library.
 add_library(${PROJECT_NAME} STATIC
-    src/configuration.cpp)
+    src/configuration.cpp
+    src/driver.cpp)
 # Specify include directories.
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -23,7 +24,8 @@ if(BUILD_TESTS)
     # Create test executable.
     add_executable(${PROJECT_NAME}_test
         test/main.cpp
-        test/configuration.cpp)
+        test/configuration.cpp
+        test/driver.cpp)
     # Link test executable.
     target_link_libraries(${PROJECT_NAME}_test
         ${PROJECT_NAME}

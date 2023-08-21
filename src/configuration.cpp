@@ -15,58 +15,106 @@ using namespace ads101x;
 
 // CONSTRUCTORS
 configuration::configuration()
-    : operation(ads101x::operation::IDLE),
-      multiplexer(ads101x::multiplexer::AIN0_AIN1),
-      fsr(ads101x::fsr::FSR_2_048),
-      mode(ads101x::mode::MODE_SINGLESHOT),
-      data_rate(ads101x::data_rate::SPS_1600),
-      comparator_mode(ads101x::comparator_mode::TRADITIONAL),
-      comparator_polarity(ads101x::comparator_polarity::ACTIVE_LOW),
-      comparator_latch(ads101x::comparator_latch::NONLATCHING),
-      comparator_queue(ads101x::comparator_queue::DISABLED)
+    : m_bitfield(0x0583)
 {}
-configuration::configuration(uint16_t value)
-    : operation(static_cast<ads101x::operation>(value & MASK_OPERATION)),
-      multiplexer(static_cast<ads101x::multiplexer>(value & MASK_MULTIPLEXER)),
-      fsr(static_cast<ads101x::fsr>(value & MASK_FSR)),
-      mode(static_cast<ads101x::mode>(value & MASK_MODE)),
-      data_rate(static_cast<ads101x::data_rate>(value & MASK_DATA_RATE)),
-      comparator_mode(static_cast<ads101x::comparator_mode>(value & MASK_COMPARATOR_MODE)),
-      comparator_polarity(static_cast<ads101x::comparator_polarity>(value & MASK_COMPARATOR_POLARITY)),
-      comparator_latch(static_cast<ads101x::comparator_latch>(value & MASK_COMPARATOR_LATCH)),
-      comparator_queue(static_cast<ads101x::comparator_queue>(value & MASK_COMPARATOR_QUEUE))
+configuration::configuration(uint16_t bitfield)
+    : m_bitfield(bitfield)
 {}
 
-// IO
-uint16_t configuration::write() const
+// PROPERTIES
+void configuration::set_operation(configuration::operation value)
 {
-    // Create output UINT16.
-    uint16_t output = 0b0000000000000000;
-
-    // Write properties as value bitmask.
-    output |= static_cast<uint16_t>(configuration::operation);
-    output |= static_cast<uint16_t>(configuration::multiplexer);
-    output |= static_cast<uint16_t>(configuration::fsr);
-    output |= static_cast<uint16_t>(configuration::mode);
-    output |= static_cast<uint16_t>(configuration::data_rate);
-    output |= static_cast<uint16_t>(configuration::comparator_mode);
-    output |= static_cast<uint16_t>(configuration::comparator_polarity);
-    output |= static_cast<uint16_t>(configuration::comparator_latch);
-    output |= static_cast<uint16_t>(configuration::comparator_queue);
-
-    // Return output.
-    return output;
+    // Clear bits location in bitfield using mask, and then set to provided value.
+    configuration::m_bitfield = (configuration::m_bitfield & !MASK_OPERATION) | static_cast<uint16_t>(value);
 }
-void configuration::read(uint16_t value)
+configuration::operation configuration::get_operation() const
 {
-    // Read properties from value bitmask.
-    configuration::operation = static_cast<ads101x::operation>(value & MASK_OPERATION);
-    configuration::multiplexer = static_cast<ads101x::multiplexer>(value & MASK_MULTIPLEXER);
-    configuration::fsr = static_cast<ads101x::fsr>(value & MASK_FSR);
-    configuration::mode = static_cast<ads101x::mode>(value & MASK_MODE);
-    configuration::data_rate = static_cast<ads101x::data_rate>(value & MASK_DATA_RATE);
-    configuration::comparator_mode = static_cast<ads101x::comparator_mode>(value & MASK_COMPARATOR_MODE);
-    configuration::comparator_polarity = static_cast<ads101x::comparator_polarity>(value & MASK_COMPARATOR_POLARITY);
-    configuration::comparator_latch = static_cast<ads101x::comparator_latch>(value & MASK_COMPARATOR_LATCH);
-    configuration::comparator_queue = static_cast<ads101x::comparator_queue>(value & MASK_COMPARATOR_QUEUE);
+    // Read value from bitfield.
+    return static_cast<configuration::operation>(configuration::m_bitfield & MASK_OPERATION);
+}
+void configuration::set_multiplexer(configuration::multiplexer value)
+{
+    // Clear bits location in bitfield using mask, and then set to provided value.
+    configuration::m_bitfield = (configuration::m_bitfield & !MASK_MULTIPLEXER) | static_cast<uint16_t>(value);
+}
+configuration::multiplexer configuration::get_multiplexer() const
+{
+    // Read value from bitfield.
+    return static_cast<configuration::multiplexer>(configuration::m_bitfield & MASK_MULTIPLEXER);
+}
+void configuration::set_fsr(configuration::fsr value)
+{
+    // Clear bits location in bitfield using mask, and then set to provided value.
+    configuration::m_bitfield = (configuration::m_bitfield & !MASK_FSR) | static_cast<uint16_t>(value);
+}
+configuration::fsr configuration::get_fsr() const
+{
+    // Read value from bitfield.
+    return static_cast<configuration::fsr>(configuration::m_bitfield & MASK_FSR);
+}
+void configuration::set_mode(configuration::mode value)
+{
+    // Clear bits location in bitfield using mask, and then set to provided value.
+    configuration::m_bitfield = (configuration::m_bitfield & !MASK_MODE) | static_cast<uint16_t>(value);
+}
+configuration::mode configuration::get_mode() const
+{
+    // Read value from bitfield.
+    return static_cast<configuration::mode>(configuration::m_bitfield & MASK_MODE);
+}
+void configuration::set_data_rate(configuration::data_rate value)
+{
+    // Clear bits location in bitfield using mask, and then set to provided value.
+    configuration::m_bitfield = (configuration::m_bitfield & !MASK_DATA_RATE) | static_cast<uint16_t>(value);
+}
+configuration::data_rate configuration::get_data_rate() const
+{
+    // Read value from bitfield.
+    return static_cast<configuration::data_rate>(configuration::m_bitfield & MASK_DATA_RATE);
+}
+void configuration::set_comparator_mode(configuration::comparator_mode value)
+{
+    // Clear bits location in bitfield using mask, and then set to provided value.
+    configuration::m_bitfield = (configuration::m_bitfield & !MASK_COMPARATOR_MODE) | static_cast<uint16_t>(value);
+}
+configuration::comparator_mode configuration::get_comparator_mode() const
+{
+    // Read value from bitfield.
+    return static_cast<configuration::comparator_mode>(configuration::m_bitfield & MASK_COMPARATOR_MODE);
+}
+void configuration::set_comparator_polarity(configuration::comparator_polarity value)
+{
+    // Clear bits location in bitfield using mask, and then set to provided value.
+    configuration::m_bitfield = (configuration::m_bitfield & !MASK_COMPARATOR_POLARITY) | static_cast<uint16_t>(value);
+}
+configuration::comparator_polarity configuration::get_comparator_polarity() const
+{
+    // Read value from bitfield.
+    return static_cast<configuration::comparator_polarity>(configuration::m_bitfield & MASK_COMPARATOR_POLARITY);
+}
+void configuration::set_comparator_latch(configuration::comparator_latch value)
+{
+    // Clear bits location in bitfield using mask, and then set to provided value.
+    configuration::m_bitfield = (configuration::m_bitfield & !MASK_COMPARATOR_LATCH) | static_cast<uint16_t>(value);
+}
+configuration::comparator_latch configuration::get_comparator_latch() const
+{
+    // Read value from bitfield.
+    return static_cast<configuration::comparator_latch>(configuration::m_bitfield & MASK_COMPARATOR_LATCH);
+}
+void configuration::set_comparator_queue(configuration::comparator_queue value)
+{
+    // Clear bits location in bitfield using mask, and then set to provided value.
+    configuration::m_bitfield = (configuration::m_bitfield & !MASK_COMPARATOR_QUEUE) | static_cast<uint16_t>(value);
+}
+configuration::comparator_queue configuration::get_comparator_queue() const
+{
+    // Read value from bitfield.
+    return static_cast<configuration::comparator_queue>(configuration::m_bitfield & MASK_COMPARATOR_QUEUE);
+}
+
+// BITFIELD
+uint16_t configuration::bitfield() const
+{
+    return configuration::m_bitfield;
 }
