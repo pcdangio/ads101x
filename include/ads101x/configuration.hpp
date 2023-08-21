@@ -26,11 +26,11 @@ public:
         IDLE            = 0b0000000000000000,   ///< Do not start a conversion (WRITE), or not actively performing a conversion (READ)
         CONVERT         = 0b1000000000000000    ///< Start a conversion (WRITE), or is actively performing a conversion (READ)
     };
-    /// @brief Sets the operation status.
-    /// @param value The value to set.
+    /// \brief Sets the operation status.
+    /// \param value The value to set.
     void set_operation(configuration::operation value);
-    /// @brief Gets the operation status.
-    /// @return The operation status.
+    /// \brief Gets the operation status.
+    /// \return The operation status.
     configuration::operation get_operation() const;
 
     /// \brief Enumerates the multiplexer settings of the ADS101X.
@@ -45,11 +45,11 @@ public:
         AIN2_GND        = 0b0110000000000000,   ///< Measures voltage of AIN2 in reference to GND.
         AIN3_GND        = 0b0111000000000000    ///< Measures voltage of AIN3 in reference to GND.
     };
-    /// @brief Sets the multiplexer mode.
-    /// @param value The multiplexer mode to set.
+    /// \brief Sets the multiplexer mode.
+    /// \param value The multiplexer mode to set.
     void set_multiplexer(configuration::multiplexer value);
-    /// @brief Gets the multiplexer mode.
-    /// @return The multiplexer mode.
+    /// \brief Gets the multiplexer mode.
+    /// \return The multiplexer mode.
     configuration::multiplexer get_multiplexer() const;
 
     /// \brief Enumerates the full-scale range (FSR) of the ADS101X.
@@ -62,11 +62,11 @@ public:
         FSR_0_512       = 0b0000100000000000,   ///< +/- 0.512V FSR
         FSR_0_256       = 0b0000101000000000    ///< +/- 0.256V FSR
     };
-    /// @brief Sets the full scale range.
-    /// @param value The full scale range to set.
+    /// \brief Sets the full scale range.
+    /// \param value The full scale range to set.
     void set_fsr(configuration::fsr value);
-    /// @brief Gets the full scale range.
-    /// @return The full scale range.
+    /// \brief Gets the full scale range.
+    /// \return The full scale range.
     configuration::fsr get_fsr() const;
 
     /// \brief Enumerates the measurement mode of the ADS101X.
@@ -75,11 +75,11 @@ public:
         CONTINUOUS      = 0b0000000000000000,   ///< Continuous measurement mode.
         SINGLESHOT      = 0b0000000100000000    ///< Single-shot measurement mode.
     };
-    /// @brief Sets the measurement mode.
-    /// @param value The measurement mode to set.
+    /// \brief Sets the measurement mode.
+    /// \param value The measurement mode to set.
     void set_mode(configuration::mode value);
-    /// @brief Gets the measurement mode.
-    /// @return The measurement mode.
+    /// \brief Gets the measurement mode.
+    /// \return The measurement mode.
     configuration::mode get_mode() const;
     
     /// \brief Enumerates the sampling data rate of the ADS101X.
@@ -93,11 +93,11 @@ public:
         SPS_2400        = 0b0000000010100000,   ///< 2400 samples per second.
         SPS_3300        = 0b0000000011000000    ///< 3300 samples per second.
     };
-    /// @brief Sets the data rate.
-    /// @param value The data rate to set.
+    /// \brief Sets the data rate.
+    /// \param value The data rate to set.
     void set_data_rate(configuration::data_rate value);
-    /// @brief Gets the data rate.
-    /// @return The data rate.
+    /// \brief Gets the data rate.
+    /// \return The data rate.
     configuration::data_rate get_data_rate() const;
 
     /// \brief Enumerates the assertion modes of the ADS101X comparator.
@@ -106,11 +106,11 @@ public:
         TRADITIONAL     = 0b0000000000000000,   ///< ALERT/RDY pin asserts above HI_THRESH, and deasserts below LO_THRESH.
         WINDOW          = 0b0000000000010000    ///< ALERT/RDY pin asserts outside of HI_THRESH and LO_THRESH, and deasserts within.
     };
-    /// @brief Sets the comparator mode.
-    /// @param value The comarator mode to set.
+    /// \brief Sets the comparator mode.
+    /// \param value The comarator mode to set.
     void set_comparator_mode(configuration::comparator_mode value);
-    /// @brief Gets the comparator mode.
-    /// @return The comparator mode.
+    /// \brief Gets the comparator mode.
+    /// \return The comparator mode.
     configuration::comparator_mode get_comparator_mode() const;
 
     /// \brief Enumerates the assertion polarities of the ADS101X comparator.
@@ -119,11 +119,11 @@ public:
         ACTIVE_LOW      = 0b0000000000000000,   ///< ALERT/RDY pin driven low when asserted.
         ACTIVE_HIGH     = 0b0000000000001000    ///< ALERT/RDY pin driven high when asserted.
     };
-    /// @brief Sets the comparator polarity.
-    /// @param value The comparator polarity to set.
+    /// \brief Sets the comparator polarity.
+    /// \param value The comparator polarity to set.
     void set_comparator_polarity(configuration::comparator_polarity value);
-    /// @brief Gets the comparator polarity.
-    /// @return The comparator polarity.
+    /// \brief Gets the comparator polarity.
+    /// \return The comparator polarity.
     configuration::comparator_polarity get_comparator_polarity() const;
 
     /// \brief Enumerates the latching modes of the ADS101X comparator.
@@ -132,11 +132,11 @@ public:
         NONLATCHING     = 0b0000000000000000,   ///< ALERT/RDY pin does not latch when asserted.
         LATCHING        = 0b0000000000000100    ///< ALERT/RDY pin latches when asserted.
     };
-    /// @brief Sets the comparator latch mode.
-    /// @param value The comparator latch mode to set.
+    /// \brief Sets the comparator latch mode.
+    /// \param value The comparator latch mode to set.
     void set_comparator_latch(configuration::comparator_latch value);
-    /// @brief Gets the comparator latch mode.
-    /// @return The comparator latch mode.
+    /// \brief Gets the comparator latch mode.
+    /// \return The comparator latch mode.
     configuration::comparator_latch get_comparator_latch() const;
 
     /// \brief Enumerates the queue configurations of the ADS101X comparator.
@@ -147,11 +147,11 @@ public:
         AFTER_4         = 0b0000000000000010,   ///< ALERT/RDY pin asserts after four successive conversions trigger the comparator.
         DISABLED        = 0b0000000000000011    ///< Comparator is disabled and ALERT/RDY pin placed in high impedance.
     };
-    /// @brief Sets the comparator queue mode.
-    /// @param value The comparator queue mode to set.
+    /// \brief Sets the comparator queue mode.
+    /// \param value The comparator queue mode to set.
     void set_comparator_queue(configuration::comparator_queue value);
-    /// @brief Gets the comparator queue mode.
-    /// @return The comparator queue mode.
+    /// \brief Gets the comparator queue mode.
+    /// \return The comparator queue mode.
     configuration::comparator_queue get_comparator_queue() const;
 
     // BITFIELD
@@ -160,7 +160,7 @@ public:
     uint16_t bitfield() const;
 
 private:
-    /// @brief The bitfield representation of the configuration.
+    /// \brief The bitfield representation of the configuration.
     uint16_t m_bitfield;
 };
 
