@@ -1,7 +1,7 @@
-/// \file ads101x/driver.hpp
-/// \brief Defines the ads101x::driver class.
-#ifndef ADS101X___DRIVER_H
-#define ADS101X___DRIVER_H
+/// \file ads101x/driver/base.hpp
+/// \brief Defines the ads101x::driver::base class.
+#ifndef ADS101X___DRIVER___BASE_H
+#define ADS101X___DRIVER___BASE_H
 
 // ads101x
 #include <ads101x/address.hpp>
@@ -9,9 +9,11 @@
 
 /// \brief Contains all code for the ADS101X driver.
 namespace ads101x {
+/// \brief Contains all code for ADS101X driver implementations.
+namespace driver {
 
 /// \brief An abstract, base driver class for interacting with the ADS101X analog to digital converter.
-class driver
+class base
 {
 public:
     // CONTROL
@@ -80,6 +82,6 @@ protected:
     virtual uint16_t read_register(uint8_t register_address) const = 0;
 };
 
-}
+}}
 
 #endif
