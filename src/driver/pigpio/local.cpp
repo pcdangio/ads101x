@@ -3,6 +3,9 @@
 // ads101x
 #include <ads101x/driver/pigpio/error.hpp>
 
+// pigpio
+#include <pigpio.h>
+
 // std
 #include <endian.h>
 
