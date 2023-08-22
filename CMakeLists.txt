@@ -9,7 +9,9 @@ project(ads101x
 # Create library.
 add_library(${PROJECT_NAME} STATIC
     src/configuration.cpp
-    src/driver/base.cpp)
+    src/driver/base.cpp
+    src/driver/pigpio/error.cpp
+    src/driver/pigpio/local.cpp)
 # Specify include directories.
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include)
