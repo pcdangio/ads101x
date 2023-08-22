@@ -25,7 +25,7 @@ if(BUILD_TESTS)
     add_executable(${PROJECT_NAME}_test
         test/main.cpp
         test/configuration.cpp
-        test/driver.cpp)
+        test/driver/base.cpp)
     # Link test executable.
     target_link_libraries(${PROJECT_NAME}_test
         ${PROJECT_NAME}
