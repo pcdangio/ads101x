@@ -16,14 +16,21 @@
 #define TEST_I2C_ADDRESS 0x48
 #endif
 
-// CONFIGURATION
-TEST(pigpio_local, configuration)
+// INITIALIZE
+TEST(pigpio_local, initialize)
 {
     // Create driver.
     ads101x::driver::pigpio::local driver;
 
     // Initialize pigpio.
     driver.initialize_pigpio();
+}
+
+// CONFIGURATION
+TEST(pigpio_local, configuration)
+{
+    // Create driver.
+    ads101x::driver::pigpio::local driver;
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
@@ -43,9 +50,6 @@ TEST(pigpio_local, configuration)
 
     // Verify that the current config is the same as the modified config.
     EXPECT_EQ(config_read.bitfield(), config_write.bitfield());
-
-    // Close pigpio.
-    driver.terminate_pigpio();
 }
 
 // CONVERSION
@@ -53,9 +57,6 @@ TEST(pigpio_local, conversion)
 {
     // Create driver.
     ads101x::driver::pigpio::local driver;
-
-    // Initialize pigpio.
-    driver.initialize_pigpio();
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
@@ -80,11 +81,8 @@ TEST(pigpio_local, conversion)
         uint16_t conversion = driver.read_conversion();
 
         // Output conversion.
-        GTEST_LOG_(INFO) << "conversion " << i << " = " << conversion;
+        std::cout << "conversion " << i << " = " << conversion;
     }
-
-    // Close pigpio.
-    driver.terminate_pigpio();
 }
 
 // THRESHOLDS
@@ -92,9 +90,6 @@ TEST(pigpio_local, lo_thresh)
 {
     // Create driver.
     ads101x::driver::pigpio::local driver;
-
-    // Initialize pigpio.
-    driver.initialize_pigpio();
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
@@ -110,17 +105,11 @@ TEST(pigpio_local, lo_thresh)
 
     // Verify write/read values are equal.
     EXPECT_EQ(lo_thresh_read, lo_thresh_write);
-
-    // Close pigpio.
-    driver.terminate_pigpio();
 }
 TEST(pigpio_local, hi_thresh)
 {
     // Create driver.
     ads101x::driver::pigpio::local driver;
-
-    // Initialize pigpio.
-    driver.initialize_pigpio();
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
@@ -136,7 +125,14 @@ TEST(pigpio_local, hi_thresh)
 
     // Verify write/read values are equal.
     EXPECT_EQ(hi_thresh_read, hi_thresh_write);
+}
 
-    // Close pigpio.
+// TERMINATE
+TEST(pigpio_local, terminate)
+{
+    // Create driver.
+    ads101x::driver::pigpio::local driver;
+
+    // Terminate pigpio.
     driver.terminate_pigpio();
 }
