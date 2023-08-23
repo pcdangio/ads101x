@@ -50,6 +50,13 @@ void local::open_i2c(uint32_t i2c_bus, uint8_t i2c_address)
 }
 void local::close_i2c()
 {
+    // Check if I2C is open.
+    if(local::m_i2c_handle < 0)
+    {
+        // I2C is already closed.
+        return;
+    }
+
     // Try to close I2C.
     int32_t result = i2cClose(local::m_i2c_handle);
 
