@@ -81,7 +81,7 @@ TEST(pigpio_local, conversion)
         uint16_t conversion = driver.read_conversion();
 
         // Output conversion.
-        std::cout << "conversion " << i << " = " << conversion;
+        std::cout << "conversion " << i << " = " << conversion << std::endl;
     }
 }
 
