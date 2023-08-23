@@ -22,8 +22,17 @@ public:
     local();
     ~local();
 
+    // PIGPIO
+    /// \brief Initializes the pigpio library for use.
+    /// \details Use this convenience function to initialize pigpio if not already done elsewhere in the application.
+    /// \exception std::runtime_error if initialization fails.
+    void initialize_pigpio();
+    /// \brief Terminates the pigpio library and frees resources.
+    /// \details Use this convenience function to terminate pigpio if not already done elsewhere in the application.
+    void terminate_pigpio();
+
 private:
-    // OVERRIDES
+    // I2C
     void open_i2c(uint32_t i2c_bus, uint8_t i2c_address) override;
     void close_i2c() override;
     void write_register(uint8_t register_address, uint16_t value) const override;

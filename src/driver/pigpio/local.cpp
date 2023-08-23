@@ -21,6 +21,21 @@ local::~local()
     local::close_i2c();
 }
 
+// PIGPIO
+void local::initialize_pigpio()
+{
+    // Try to initialize the library.
+    int32_t result = gpioInitialise();
+
+    // Handle error if present.
+    ads101x::driver::pigpio::error(result);
+}
+void local::terminate_pigpio()
+{
+    // Terminate the library.
+    gpioTerminate();
+}
+
 // OVERRIDES
 void local::open_i2c(uint32_t i2c_bus, uint8_t i2c_address)
 {
