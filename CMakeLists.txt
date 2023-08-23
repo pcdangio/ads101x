@@ -72,5 +72,5 @@ if(BUILD_TESTS)
     # Link dependencies.
     target_link_libraries(${PROJECT_NAME}_test
         ${PROJECT_NAME}
-        GTest::gtest)
+        GTest::GTest)
 endif()
