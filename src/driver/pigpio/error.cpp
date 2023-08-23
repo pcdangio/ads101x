@@ -21,6 +21,16 @@ void ads101x::driver::pigpio::error(int32_t result)
     // Handle error.
     switch(result)
     {
+        case PI_INIT_FAILED:
+        {
+            message += "failed to initialize library";
+            break;
+        }
+        case PI_NOT_INITIALISED:
+        {
+            message += "library is not initialized";
+            break;
+        }
         case PI_NO_HANDLE:
         {
             message += "no i2c handle";
