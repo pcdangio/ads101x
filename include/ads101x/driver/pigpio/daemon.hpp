@@ -35,6 +35,9 @@ public:
     void pigpiod_connect(const std::string& ip_address = "localhost", uint16_t port = 8888);
     /// \brief Disconnects from the pigpio daemon.
     void pigpiod_disconnect();
+    /// \brief Gets the handle for the driver's pigpio daemon connection.
+    /// \return If connected, returns the handle. If not connected, returns PI_NO_HANDLE.
+    int32_t pigpiod_handle() const;
 
 private:
     // OVERRIDES

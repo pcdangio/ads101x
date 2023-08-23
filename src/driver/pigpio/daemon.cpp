@@ -53,6 +53,10 @@ void daemon::pigpiod_disconnect()
     // Disconnect from daemon.
     pigpio_stop(daemon::m_daemon_handle);
 }
+int32_t daemon::pigpiod_handle() const
+{
+    return daemon::m_daemon_handle;
+}
 
 // OVERRIDES
 void daemon::open_i2c(uint32_t i2c_bus, uint8_t i2c_address)
