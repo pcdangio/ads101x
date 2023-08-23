@@ -10,7 +10,7 @@
 // PARAMATERS
 // NOTE: These may be overridden by compiler options.
 #ifndef TEST_I2C_BUS
-#define TEST_I2C_BUS 0
+#define TEST_I2C_BUS 1
 #endif
 #ifndef TEST_I2C_ADDRESS
 #define TEST_I2C_ADDRESS 0x48
