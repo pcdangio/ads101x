@@ -18,7 +18,6 @@ class local
 public:
     // CONSTRUCTORS
     /// \brief Constructs a new ADS101X driver instance.
-    /// \note The application must initialize the pigpio library before using this class.
     local();
     ~local();
 
