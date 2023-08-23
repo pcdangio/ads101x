@@ -1,6 +1,9 @@
 // ads101x
 #include <ads101x/driver/pigpio/daemon.hpp>
 
+// pigpio
+#include <pigpio.h>
+
 // gtest
 #include <gtest/gtest.h>
 
@@ -19,30 +22,38 @@
 #define TEST_I2C_ADDRESS 0x48
 #endif
 
-class pigpio_daemon
-    : public testing::Test
-{
-protected:
-    ads101x::driver::pigpio::daemon driver;
-};
+// Create global storage for connection handle.
+int32_t pigpiod_handle = PI_NO_HANDLE;
 
 // CONNECT
-TEST_F(pigpio_daemon, connect)
+TEST(pigpio_daemon, connect)
 {
+    // Create driver instance.
+    ads101x::driver::pigpio::daemon driver;
+
     // Connect to pigpio daemon.
     driver.pigpiod_connect(TEST_DAEMON_IP, TEST_DAEMON_PORT);
+
+    // Store handle.
+    pigpiod_handle = driver.pigpiod_handle();
 }
 
 // START
-TEST_F(pigpio_daemon, start)
+TEST(pigpio_daemon, start)
 {
+    // Create driver instance.
+    ads101x::driver::pigpio::daemon driver(pigpiod_handle);
+
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
 }
 
 // CONFIGURATION
-TEST_F(pigpio_daemon, configuration)
+TEST(pigpio_daemon, configuration)
 {
+    // Create driver instance.
+    ads101x::driver::pigpio::daemon driver(pigpiod_handle);
+
     // Create a non-default configuration.
     ads101x::configuration config_write;
     config_write.set_multiplexer(ads101x::configuration::multiplexer::AIN0_GND);
@@ -61,8 +72,11 @@ TEST_F(pigpio_daemon, configuration)
 }
 
 // CONVERSION
-TEST_F(pigpio_daemon, conversion)
+TEST(pigpio_daemon, conversion)
 {
+    // Create driver instance.
+    ads101x::driver::pigpio::daemon driver(pigpiod_handle);
+
     // Create a configuration to start a single-shot conversion.
     ads101x::configuration config;
     config.set_operation(ads101x::configuration::operation::CONVERT);
@@ -88,8 +102,11 @@ TEST_F(pigpio_daemon, conversion)
 }
 
 // THRESHOLDS
-TEST_F(pigpio_daemon, lo_thresh)
+TEST(pigpio_daemon, lo_thresh)
 {
+    // Create driver instance.
+    ads101x::driver::pigpio::daemon driver(pigpiod_handle);
+
     // Define lo_thresh value to write.
     uint16_t lo_thresh_write = 0b0000101010101010;
 
@@ -102,8 +119,11 @@ TEST_F(pigpio_daemon, lo_thresh)
     // Verify write/read values are equal.
     EXPECT_EQ(lo_thresh_read, lo_thresh_write);
 }
-TEST_F(pigpio_daemon, hi_thresh)
+TEST(pigpio_daemon, hi_thresh)
 {
+    // Create driver instance.
+    ads101x::driver::pigpio::daemon driver(pigpiod_handle);
+
     // Define hi_thresh value to write.
     uint16_t hi_thresh_write = 0b0000101010101010;
 
@@ -118,15 +138,21 @@ TEST_F(pigpio_daemon, hi_thresh)
 }
 
 // STOP
-TEST_F(pigpio_daemon, stop)
+TEST(pigpio_daemon, stop)
 {
+    // Create driver instance.
+    ads101x::driver::pigpio::daemon driver(pigpiod_handle);
+
     // Stop the driver.
     driver.stop();
 }
 
 // DISCONNECT
-TEST_F(pigpio_daemon, disconnect)
+TEST(pigpio_daemon, disconnect)
 {
+    // Create driver instance.
+    ads101x::driver::pigpio::daemon driver(pigpiod_handle);
+    
     // Disconnect from pigpio daemon.
     driver.pigpiod_disconnect();
 }
