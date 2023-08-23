@@ -6,6 +6,9 @@
 // ads101x
 #include <ads101x/driver/base.hpp>
 
+// std
+#include <string>
+
 namespace ads101x {
 namespace driver {
 namespace pigpio {
@@ -18,10 +21,20 @@ class daemon
 public:
     // CONSTRUCTORS
     /// \brief Constructs a new ADS101X driver instance.
-    /// \param daemon_handle The handle to the application's open pigpio daemon connection.
-    /// \note The application must connect to the pigpio daemon before using this class.
+    daemon();
+    /// \brief Constructs a new ADS101X driver instance using an existing pigpio daemon connection.
+    /// \param daemon_handle The handle to the application's existing pigpio daemon connection.
     daemon(int32_t daemon_handle);
     ~daemon();
+
+    // PIGPIO
+    /// \brief Connects to the pigpio daemon.
+    /// \param ip_address The IP address of the host running the pigpio daemon.
+    /// \param port The port to communicate with the pigpio daemon on the host.
+    /// \exception std::runtime_error if the connection fails.
+    void pigpiod_connect(const std::string& ip_address = "localhost", uint16_t port = 8888);
+    /// \brief Disconnects from the pigpio daemon.
+    void pigpiod_disconnect();
 
 private:
     // OVERRIDES
@@ -32,7 +45,7 @@ private:
 
     // HANDLES
     /// \brief Store the handle for an open pigpio daemon connection.
-    const int32_t m_daemon_handle;
+    int32_t m_daemon_handle;
     /// \brief Stores the handle for an open I2C connection.
     int32_t m_i2c_handle;
 };

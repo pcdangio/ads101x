@@ -12,6 +12,10 @@
 using namespace ads101x::driver::pigpio;
 
 // CONSTRUCTORS
+daemon::daemon()
+    : m_daemon_handle(PI_NO_HANDLE),
+      m_i2c_handle(PI_NO_HANDLE)
+{}
 daemon::daemon(int32_t daemon_handle)
     : m_daemon_handle(daemon_handle),
       m_i2c_handle(PI_NO_HANDLE)
@@ -20,6 +24,34 @@ daemon::~daemon()
 {
     // Stop the driver if necessary.
     daemon::close_i2c();
+}
+
+// PIGPIO
+void daemon::pigpiod_connect(const std::string& ip_address, uint16_t port)
+{
+    // Close prior connection if necessary.
+    daemon::pigpiod_disconnect();
+
+    // Try to connect.
+    int32_t result = pigpio_start(ip_address.c_str(), std::to_string(port).c_str());
+
+    // Handle error if necessary.
+    ads101x::driver::pigpio::error(result);
+
+    // Store deamon handle.
+    daemon::m_daemon_handle = result;
+}
+void daemon::pigpiod_disconnect()
+{
+    // Check if connected.
+    if(daemon::m_daemon_handle < 0)
+    {
+        // Deamon already disconnected.
+        return;
+    }
+
+    // Disconnect from daemon.
+    pigpio_stop(daemon::m_daemon_handle);
 }
 
 // OVERRIDES
