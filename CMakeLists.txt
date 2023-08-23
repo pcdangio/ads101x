@@ -73,4 +73,6 @@ if(BUILD_TESTS)
     target_link_libraries(${PROJECT_NAME}_test
         ${PROJECT_NAME}
         GTest::GTest)
+    # Print that tests are being built.
+    message("Configured to build tests")
 endif()
