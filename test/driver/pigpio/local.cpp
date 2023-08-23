@@ -1,9 +1,6 @@
 // ads101x
 #include <ads101x/driver/pigpio/local.hpp>
 
-// pigpio
-#include <pigpio.h>
-
 // gtest
 #include <gtest/gtest.h>
 
