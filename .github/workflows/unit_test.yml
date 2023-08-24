@@ -21,7 +21,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DBUILD_TESTS=ON ..
+        cmake -DADS101X_BASE=ON -DADS101X_TESTS=ON ..
     
     - name: build
       run: |
@@ -31,4 +31,4 @@ jobs:
     - name: test
       run: |
         cd build
-        ./ads101x_test
+        ./ads101x_base_test
