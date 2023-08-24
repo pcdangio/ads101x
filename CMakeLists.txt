@@ -6,77 +6,105 @@ project(ads101x
     DESCRIPTION "A driver for the TI ADS101X family of analog-to-digital converters.")
 
 # OPTIONS
-option(PLATFORM "Specifies which platform to build the driver for (base, pigpio, pigpiod)")
-option(BUILD_TESTS "Specifies if unit tests should be built" OFF)
+option(BASE "Specifies if the base library will be built" OFF)
+option(PIGPIO "Specifies if the pigpio library will be built" OFF)
+option(PIGPIOD "Specifies if the pigpiod library will be built" OFF)
+option(TESTS "Specifies if unit tests should be built" OFF)
 
-# PLATFORM
+# TEST
+if(TESTS)
+    # Print that tests are being built.
+    message("-- Build tests: ON")
+    # Find dependencies.
+    find_package(GTest REQUIRED)
+endif()
+
+# BASE
 # Specify base source files.
-set(driver_sources
+set(base_sources
     src/configuration.cpp
     src/driver.cpp)
-# Specify base library dependencies.
-set(driver_libraries)
 # Specify base test files.
-set(test_sources
+set(base_test_sources
     test/main.cpp
     test/configuration.cpp
     test/driver.cpp)
-# Handle platforms.
-if(PLATFORM STREQUAL "base")
-    # No action required, base source files and link libraries already set.
-elseif(PLATFORM STREQUAL "pigpio")
+if(BASE)
+    # Print that base library is begin built.
+    message("-- Build base library: ON")
+    # Create library.
+    add_library(${PROJECT_NAME}_base STATIC ${base_sources})
+    # Specify include directories.
+    target_include_directories(${PROJECT_NAME}_base PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    # Check if building tests.
+    if(TESTS)
+        # Create test executable.
+        add_executable(${PROJECT_NAME}_base_test ${base_test_sources})
+        # Link dependencies.
+        target_link_libraries(${PROJECT_NAME}_base_test
+            ${PROJECT_NAME}_base
+            GTest::GTest)
+    endif()
+endif()
+
+# PIGPIO
+if(PIGPIO)
+    # Print that pigpio library is begin built.
+    message("-- Build pigpio library: ON")
     # Find pigpio library.
-    find_library(PIGPIO_LIBS pigpio REQUIRED)
-    # Add pigpio driver sources.
-    list(APPEND driver_sources
+    find_library(PIGPIO_LIB pigpio REQUIRED)
+    # Create library.
+    add_library(${PROJECT_NAME}_pigpio STATIC
+        ${base_sources}
         src/pigpio/error.cpp
         src/pigpio/driver.cpp)
-    # Add pigpio to library dependencies.
-    list(APPEND driver_libraries ${PIGPIO_LIBS})
-    # Add pigpio test sources.
-    list(APPEND test_sources
-        test/pigpio/driver.cpp)
-elseif(PLATFORM STREQUAL "pigpiod")
+    # Link dependencies.
+    target_link_libraries(${PROJECT_NAME}_pigpio
+        ${PIGPIO_LIB})
+    # Specify include directories.
+    target_include_directories(${PROJECT_NAME}_pigpio PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    # Check if building tests.
+    if(TESTS)
+        # Create test executable.
+        add_executable(${PROJECT_NAME}_pigpio_test
+            ${base_test_sources}
+            test/pigpio/driver.cpp)
+        # Link dependencies.
+        target_link_libraries(${PROJECT_NAME}_pigpio_test
+            ${PROJECT_NAME}_pigpio
+            GTest::GTest)
+    endif()
+endif()
+
+# PIGPIOD
+if(PIGPIOD)
+    # Print that pigpiod library is begin built.
+    message("-- Build pigpiod library: ON")
     # Find pigpiod library.
-    find_library(PIGPIOD_LIBS pigpiod_if2 REQUIRED)
-    # Add pigpiod driver sources.
-    list(APPEND driver_sources
+    find_library(PIGPIOD_LIB pigpiod_if2 REQUIRED)
+    # Create library.
+    add_library(${PROJECT_NAME}_pigpiod STATIC
+        ${base_sources}
         src/pigpio/error.cpp
         src/pigpiod/error.cpp
         src/pigpiod/driver.cpp)
-    # Add pigpio to library dependencies.
-    list(APPEND driver_libraries ${PIGPIOD_LIBS})
-    # Add pigpiod test sources.
-    list(APPEND test_sources
-        test/pigpiod/driver.cpp)
-elseif(PLATFORM STREQUAL "OFF")
-    message(FATAL_ERROR "PLATFORM option is not set")
-else()
-    message(FATAL_ERROR "PLATFORM option \"${PLATFORM}\" is unrecognized")
-endif()
-# Print platform that is being built.
-message("Configured for platform \"${PLATFORM}\"")
-
-# LIBRARY
-# Create library.
-add_library(${PROJECT_NAME} STATIC ${driver_sources})
-# Link dependencies.
-target_link_libraries(${PROJECT_NAME} ${driver_libraries})
-# Specify include directories.
-target_include_directories(${PROJECT_NAME} PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-# TEST
-# Check if option is set.
-if(BUILD_TESTS)
-    # Find dependencies.
-    find_package(GTest REQUIRED)
-    # Create test executable.
-    add_executable(${PROJECT_NAME}_test ${test_sources})
     # Link dependencies.
-    target_link_libraries(${PROJECT_NAME}_test
-        ${PROJECT_NAME}
-        GTest::GTest)
-    # Print that tests are being built.
-    message("Configured to build tests")
+    target_link_libraries(${PROJECT_NAME}_pigpiod
+        ${PIGPIOD_LIB})
+    # Specify include directories.
+    target_include_directories(${PROJECT_NAME}_pigpiod PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    # Check if building tests.
+    if(TESTS)
+        # Create test executable.
+        add_executable(${PROJECT_NAME}_pigpiod_test
+            ${base_test_sources}
+            test/pigpiod/driver.cpp)
+        # Link dependencies.
+        target_link_libraries(${PROJECT_NAME}_pigpiod_test
+            ${PROJECT_NAME}_pigpiod
+            GTest::GTest)
+    endif()
 endif()
