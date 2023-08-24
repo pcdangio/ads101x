@@ -1,12 +1,12 @@
 // ads101x
-#include <ads101x/driver/base.hpp>
+#include <ads101x/driver.hpp>
 
 // gtest
 #include <gtest/gtest.h>
 
 // Create test driver object.
 struct test_driver
-    : public ads101x::driver::base
+    : public ads101x::driver
 {
     // CONSTRUCTORS
     test_driver()

@@ -13,14 +13,14 @@ option(BUILD_TESTS "Specifies if unit tests should be built" OFF)
 # Specify base source files.
 set(driver_sources
     src/configuration.cpp
-    src/driver/base.cpp)
+    src/driver.cpp)
 # Specify base library dependencies.
 set(driver_libraries)
 # Specify base test files.
 set(test_sources
     test/main.cpp
     test/configuration.cpp
-    test/driver/base.cpp)
+    test/driver.cpp)
 # Handle platforms.
 if(PLATFORM STREQUAL "base")
     # No action required, base source files and link libraries already set.
