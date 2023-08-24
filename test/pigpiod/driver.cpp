@@ -26,7 +26,7 @@
 int32_t pigpiod_handle = PI_NO_HANDLE;
 
 // CONNECT
-TEST(pigpio_daemon, connect)
+TEST(pigpiod, connect)
 {
     // Create driver instance.
     ads101x::pigpiod::driver driver;
@@ -39,7 +39,7 @@ TEST(pigpio_daemon, connect)
 }
 
 // CONFIGURATION
-TEST(pigpio_daemon, configuration)
+TEST(pigpiod, configuration)
 {
     // Create driver instance.
     ads101x::pigpiod::driver driver(pigpiod_handle);
@@ -68,7 +68,7 @@ TEST(pigpio_daemon, configuration)
 }
 
 // CONVERSION
-TEST(pigpio_daemon, conversion)
+TEST(pigpiod, conversion)
 {
     // Create driver instance.
     ads101x::pigpiod::driver driver(pigpiod_handle);
@@ -100,7 +100,7 @@ TEST(pigpio_daemon, conversion)
 }
 
 // THRESHOLDS
-TEST(pigpio_daemon, lo_thresh)
+TEST(pigpiod, lo_thresh)
 {
     // Create driver instance.
     ads101x::pigpiod::driver driver(pigpiod_handle);
@@ -123,7 +123,7 @@ TEST(pigpio_daemon, lo_thresh)
     // Stop the driver.
     driver.stop();
 }
-TEST(pigpio_daemon, hi_thresh)
+TEST(pigpiod, hi_thresh)
 {
     // Create driver instance.
     ads101x::pigpiod::driver driver(pigpiod_handle);
@@ -148,7 +148,7 @@ TEST(pigpio_daemon, hi_thresh)
 }
 
 // DISCONNECT
-TEST(pigpio_daemon, disconnect)
+TEST(pigpiod, disconnect)
 {
     // Create driver instance.
     ads101x::pigpiod::driver driver(pigpiod_handle);

@@ -14,7 +14,7 @@
 #endif
 
 // INITIALIZE
-TEST(pigpio_local, initialize)
+TEST(pigpio, initialize)
 {
     // Create driver.
     ads101x::pigpio::driver driver;
@@ -24,7 +24,7 @@ TEST(pigpio_local, initialize)
 }
 
 // CONFIGURATION
-TEST(pigpio_local, configuration)
+TEST(pigpio, configuration)
 {
     // Create driver.
     ads101x::pigpio::driver driver;
@@ -53,7 +53,7 @@ TEST(pigpio_local, configuration)
 }
 
 // CONVERSION
-TEST(pigpio_local, conversion)
+TEST(pigpio, conversion)
 {
     // Create driver.
     ads101x::pigpio::driver driver;
@@ -85,7 +85,7 @@ TEST(pigpio_local, conversion)
 }
 
 // THRESHOLDS
-TEST(pigpio_local, lo_thresh)
+TEST(pigpio, lo_thresh)
 {
     // Create driver.
     ads101x::pigpio::driver driver;
@@ -108,7 +108,7 @@ TEST(pigpio_local, lo_thresh)
     // Stop the driver.
     driver.stop();
 }
-TEST(pigpio_local, hi_thresh)
+TEST(pigpio, hi_thresh)
 {
     // Create driver.
     ads101x::pigpio::driver driver;
@@ -133,7 +133,7 @@ TEST(pigpio_local, hi_thresh)
 }
 
 // TERMINATE
-TEST(pigpio_local, terminate)
+TEST(pigpio, terminate)
 {
     // Create driver.
     ads101x::pigpio::driver driver;
