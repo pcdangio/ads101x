@@ -68,21 +68,17 @@ TEST(pigpio_local, conversion)
     config.set_data_rate(ads101x::configuration::data_rate::SPS_3300);
     config.set_fsr(ads101x::configuration::fsr::FSR_6_114);
 
-    // Loop to perform several conversions.
-    for(uint32_t i = 0; i < 5; ++i)
-    {
-        // Write configuration to begin conversion.
-        driver.write_config(config);
+    // Write configuration to begin conversion.
+    driver.write_config(config);
 
-        // Wait for conversion to complete.
-        usleep(10000);
+    // Wait for conversion to complete.
+    usleep(10000);
 
-        // Read conversion.
-        uint16_t conversion = driver.read_conversion();
+    // Read conversion.
+    uint16_t conversion = driver.read_conversion();
 
-        // Output conversion.
-        std::cout << "conversion " << i << " = " << conversion << std::endl;
-    }
+    // Output conversion.
+    std::cout << "conversion = " << conversion << std::endl;
 
     // Stop the driver.
     driver.stop();

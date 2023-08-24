@@ -38,16 +38,16 @@ elseif(PLATFORM STREQUAL "pigpio")
         test/pigpio/driver.cpp)
 elseif(PLATFORM STREQUAL "pigpiod")
     # Find pigpiod library.
-    find_library(PIGPIO_LIBS pigpiod_if2 REQUIRED)
+    find_library(PIGPIOD_LIBS pigpiod_if2 REQUIRED)
     # Add pigpiod driver sources.
     list(APPEND driver_sources
-        src/driver/pigpio/error.cpp
-        src/driver/pigpio/daemon.cpp)
+        src/pigpio/error.cpp
+        src/pigpiod/driver.cpp)
     # Add pigpio to library dependencies.
-    list(APPEND driver_libraries ${PIGPIO_LIBS})
+    list(APPEND driver_libraries ${PIGPIOD_LIBS})
     # Add pigpiod test sources.
     list(APPEND test_sources
-        test/driver/pigpio/daemon.cpp)
+        test/pigpiod/driver.cpp)
 elseif(PLATFORM STREQUAL "OFF")
     message(FATAL_ERROR "PLATFORM option is not set")
 else()

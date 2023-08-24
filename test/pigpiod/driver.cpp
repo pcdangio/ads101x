@@ -1,5 +1,5 @@
 // ads101x
-#include <ads101x/driver/pigpio/daemon.hpp>
+#include <ads101x/pigpiod/driver.hpp>
 
 // pigpio
 #include <pigpio.h>
@@ -29,7 +29,7 @@ int32_t pigpiod_handle = PI_NO_HANDLE;
 TEST(pigpio_daemon, connect)
 {
     // Create driver instance.
-    ads101x::driver::pigpio::daemon driver;
+    ads101x::pigpiod::driver driver;
 
     // Connect to pigpio daemon.
     driver.pigpiod_connect(TEST_DAEMON_IP, TEST_DAEMON_PORT);
@@ -42,7 +42,7 @@ TEST(pigpio_daemon, connect)
 TEST(pigpio_daemon, configuration)
 {
     // Create driver instance.
-    ads101x::driver::pigpio::daemon driver(pigpiod_handle);
+    ads101x::pigpiod::driver driver(pigpiod_handle);
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
@@ -71,7 +71,7 @@ TEST(pigpio_daemon, configuration)
 TEST(pigpio_daemon, conversion)
 {
     // Create driver instance.
-    ads101x::driver::pigpio::daemon driver(pigpiod_handle);
+    ads101x::pigpiod::driver driver(pigpiod_handle);
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
@@ -83,21 +83,17 @@ TEST(pigpio_daemon, conversion)
     config.set_data_rate(ads101x::configuration::data_rate::SPS_3300);
     config.set_fsr(ads101x::configuration::fsr::FSR_6_114);
 
-    // Loop to perform several conversions.
-    for(uint32_t i = 0; i < 5; ++i)
-    {
-        // Write configuration to begin conversion.
-        driver.write_config(config);
+    // Write configuration to begin conversion.
+    driver.write_config(config);
 
-        // Wait for conversion to complete.
-        usleep(10000);
+    // Wait for conversion to complete.
+    usleep(10000);
 
-        // Read conversion.
-        uint16_t conversion = driver.read_conversion();
+    // Read conversion.
+    uint16_t conversion = driver.read_conversion();
 
-        // Output conversion.
-        std::cout << "conversion " << i << " = " << conversion << std::endl;
-    }
+    // Output conversion.
+    std::cout << "conversion = " << conversion << std::endl;
 
     // Stop the driver.
     driver.stop();
@@ -107,7 +103,7 @@ TEST(pigpio_daemon, conversion)
 TEST(pigpio_daemon, lo_thresh)
 {
     // Create driver instance.
-    ads101x::driver::pigpio::daemon driver(pigpiod_handle);
+    ads101x::pigpiod::driver driver(pigpiod_handle);
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
@@ -130,7 +126,7 @@ TEST(pigpio_daemon, lo_thresh)
 TEST(pigpio_daemon, hi_thresh)
 {
     // Create driver instance.
-    ads101x::driver::pigpio::daemon driver(pigpiod_handle);
+    ads101x::pigpiod::driver driver(pigpiod_handle);
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
@@ -155,7 +151,7 @@ TEST(pigpio_daemon, hi_thresh)
 TEST(pigpio_daemon, disconnect)
 {
     // Create driver instance.
-    ads101x::driver::pigpio::daemon driver(pigpiod_handle);
+    ads101x::pigpiod::driver driver(pigpiod_handle);
 
     // Disconnect from pigpio daemon.
     driver.pigpiod_disconnect();

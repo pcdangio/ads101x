@@ -10,7 +10,7 @@ namespace ads101x {
 /// \brief Contains all code for ADS101X drivers built on the pigpio library.
 namespace pigpio {
 
-/// \brief An ADS101X driver via pigpio, using a pigpio instance hosted locally by the application.
+/// \brief An ADS101X driver implemented via pigpio.
 class driver
     : public ads101x::driver
 {

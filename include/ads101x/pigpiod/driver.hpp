@@ -1,31 +1,30 @@
-/// \file ads101x/driver/pigpio/daemon.hpp
-/// \brief Defines the ads101x::driver::pigpio::daemon class.
-#ifndef ADS101X___DRIVER___PIGPIO___DAEMON_H
-#define ADS101X___DRIVER___PIGPIO___DAEMON_H
+/// \file ads101x/pigpiod/driver.hpp
+/// \brief Defines the ads101x::pigpiod::driver class.
+#ifndef ADS101X___PIGPIOD___DRIVER_H
+#define ADS101X___PIGPIOD___DRIVER_H
 
 // ads101x
-#include <ads101x/driver/base.hpp>
+#include <ads101x/driver.hpp>
 
 // std
 #include <string>
 
 namespace ads101x {
-namespace driver {
-namespace pigpio {
+/// \brief Contains all code for ADS101X drivers built on the pigpiod library.
+namespace pigpiod {
 
-/// \brief An ADS101X driver via pigpio, using the pigpio daemon interface.
-/// \note The user must initialize pigpio in their application before using this class.
-class daemon
-    : public ads101x::driver::base
+/// \brief An ADS101X driver implemented via pigpiod.
+class driver
+    : public ads101x::driver
 {
 public:
     // CONSTRUCTORS
     /// \brief Constructs a new ADS101X driver instance.
-    daemon();
+    driver();
     /// \brief Constructs a new ADS101X driver instance using an existing pigpio daemon connection.
     /// \param daemon_handle The handle to the application's existing pigpio daemon connection.
-    daemon(int32_t daemon_handle);
-    ~daemon();
+    driver(int32_t daemon_handle);
+    ~driver();
 
     // PIGPIO
     /// \brief Connects to the pigpio daemon.
@@ -53,6 +52,6 @@ private:
     int32_t m_i2c_handle;
 };
 
-}}}
+}}
 
 #endif
