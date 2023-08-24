@@ -31,4 +31,4 @@ jobs:
     - name: test
       run: |
         cd build
-        ./ads101x_test
+        ./ads101x_base_test
