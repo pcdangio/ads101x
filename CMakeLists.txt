@@ -42,6 +42,7 @@ elseif(PLATFORM STREQUAL "pigpiod")
     # Add pigpiod driver sources.
     list(APPEND driver_sources
         src/pigpio/error.cpp
+        src/pigpiod/error.cpp
         src/pigpiod/driver.cpp)
     # Add pigpio to library dependencies.
     list(APPEND driver_libraries ${PIGPIOD_LIBS})

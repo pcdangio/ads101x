@@ -1,7 +1,7 @@
 #include <ads101x/pigpiod/driver.hpp>
 
 // ads101x
-#include <ads101x/pigpio/error.hpp>
+#include <ads101x/pigpiod/error.hpp>
 
 // pigpio
 #include <pigpiod_if2.h>
@@ -36,7 +36,7 @@ void driver::pigpiod_connect(const std::string& ip_address, uint16_t port)
     int32_t result = pigpio_start(ip_address.c_str(), std::to_string(port).c_str());
 
     // Handle error if necessary.
-    ads101x::pigpio::error(result);
+    ads101x::pigpiod::error(result);
 
     // Store deamon handle.
     driver::m_daemon_handle = result;
@@ -65,7 +65,7 @@ void driver::open_i2c(uint32_t i2c_bus, uint8_t i2c_address)
     int32_t result = i2c_open(driver::m_daemon_handle, i2c_bus, i2c_address, 0);
 
     // Handle error if present.
-    ads101x::pigpio::error(result);
+    ads101x::pigpiod::error(result);
 
     // Store new handle.
     driver::m_i2c_handle = result;
@@ -83,7 +83,7 @@ void driver::close_i2c()
     int32_t result = i2c_close(driver::m_daemon_handle, driver::m_i2c_handle);
 
     // Handle error if present.
-    ads101x::pigpio::error(result);
+    ads101x::pigpiod::error(result);
 
     // Reset handle.
     driver::m_i2c_handle = PI_NO_HANDLE;
@@ -94,7 +94,7 @@ void driver::write_register(uint8_t register_address, uint16_t value) const
     int32_t result = i2c_write_word_data(driver::m_daemon_handle, driver::m_i2c_handle, register_address, htobe16(value));
 
     // Handle error if present.
-    ads101x::pigpio::error(result);
+    ads101x::pigpiod::error(result);
 }
 uint16_t driver::read_register(uint8_t register_address) const
 {
@@ -102,7 +102,7 @@ uint16_t driver::read_register(uint8_t register_address) const
     int32_t result = i2c_read_word_data(driver::m_daemon_handle, driver::m_i2c_handle, register_address);
 
     // Handle error if present.
-    ads101x::pigpio::error(result);
+    ads101x::pigpiod::error(result);
 
     // Extract 16-bit value from result, handling endianness.
     return be16toh(static_cast<uint16_t>(result));
