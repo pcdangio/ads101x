@@ -4,22 +4,21 @@
 #define ADS101X___DRIVER___PIGPIO___LOCAL_H
 
 // ads101x
-#include <ads101x/driver/base.hpp>
+#include <ads101x/driver.hpp>
 
 namespace ads101x {
-namespace driver {
 /// \brief Contains all code for ADS101X drivers built on the pigpio library.
 namespace pigpio {
 
 /// \brief An ADS101X driver via pigpio, using a pigpio instance hosted locally by the application.
-class local
-    : public ads101x::driver::base
+class driver
+    : public ads101x::driver
 {
 public:
     // CONSTRUCTORS
     /// \brief Constructs a new ADS101X driver instance.
-    local();
-    ~local();
+    driver();
+    ~driver();
 
     // PIGPIO
     /// \brief Initializes the pigpio library for use.
@@ -42,6 +41,6 @@ private:
     int32_t m_i2c_handle;
 };
 
-}}}
+}}
 
 #endif

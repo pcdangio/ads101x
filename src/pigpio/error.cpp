@@ -1,4 +1,4 @@
-#include <ads101x/driver/pigpio/error.hpp>
+#include <ads101x/pigpio/error.hpp>
 
 // std
 #include <stdexcept>
@@ -6,7 +6,7 @@
 // pigpio
 #include <pigpio.h>
 
-void ads101x::driver::pigpio::error(int32_t result)
+void ads101x::pigpio::error(int32_t result)
 {
     // Check if the result is not an error.
     if(result >= 0)

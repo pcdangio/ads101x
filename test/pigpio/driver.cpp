@@ -1,5 +1,5 @@
 // ads101x
-#include <ads101x/driver/pigpio/local.hpp>
+#include <ads101x/pigpio/driver.hpp>
 
 // gtest
 #include <gtest/gtest.h>
@@ -17,7 +17,7 @@
 TEST(pigpio_local, initialize)
 {
     // Create driver.
-    ads101x::driver::pigpio::local driver;
+    ads101x::pigpio::driver driver;
 
     // Initialize pigpio.
     driver.initialize_pigpio();
@@ -27,7 +27,7 @@ TEST(pigpio_local, initialize)
 TEST(pigpio_local, configuration)
 {
     // Create driver.
-    ads101x::driver::pigpio::local driver;
+    ads101x::pigpio::driver driver;
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
@@ -56,7 +56,7 @@ TEST(pigpio_local, configuration)
 TEST(pigpio_local, conversion)
 {
     // Create driver.
-    ads101x::driver::pigpio::local driver;
+    ads101x::pigpio::driver driver;
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
@@ -92,7 +92,7 @@ TEST(pigpio_local, conversion)
 TEST(pigpio_local, lo_thresh)
 {
     // Create driver.
-    ads101x::driver::pigpio::local driver;
+    ads101x::pigpio::driver driver;
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
@@ -115,7 +115,7 @@ TEST(pigpio_local, lo_thresh)
 TEST(pigpio_local, hi_thresh)
 {
     // Create driver.
-    ads101x::driver::pigpio::local driver;
+    ads101x::pigpio::driver driver;
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
@@ -140,7 +140,7 @@ TEST(pigpio_local, hi_thresh)
 TEST(pigpio_local, terminate)
 {
     // Create driver.
-    ads101x::driver::pigpio::local driver;
+    ads101x::pigpio::driver driver;
 
     // Terminate pigpio.
     driver.terminate_pigpio();
