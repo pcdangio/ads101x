@@ -47,6 +47,9 @@ TEST(pigpio_local, configuration)
 
     // Verify that the current config is the same as the modified config.
     EXPECT_EQ(config_read.bitfield(), config_write.bitfield());
+
+    // Stop the driver.
+    driver.stop();
 }
 
 // CONVERSION
@@ -80,6 +83,9 @@ TEST(pigpio_local, conversion)
         // Output conversion.
         std::cout << "conversion " << i << " = " << conversion << std::endl;
     }
+
+    // Stop the driver.
+    driver.stop();
 }
 
 // THRESHOLDS
@@ -102,6 +108,9 @@ TEST(pigpio_local, lo_thresh)
 
     // Verify write/read values are equal.
     EXPECT_EQ(lo_thresh_read, lo_thresh_write);
+
+    // Stop the driver.
+    driver.stop();
 }
 TEST(pigpio_local, hi_thresh)
 {
@@ -122,6 +131,9 @@ TEST(pigpio_local, hi_thresh)
 
     // Verify write/read values are equal.
     EXPECT_EQ(hi_thresh_read, hi_thresh_write);
+
+    // Stop the driver.
+    driver.stop();
 }
 
 // TERMINATE
