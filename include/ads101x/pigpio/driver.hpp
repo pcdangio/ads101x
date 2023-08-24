@@ -1,7 +1,7 @@
-/// \file ads101x/driver/pigpio/local.hpp
-/// \brief Defines the ads101x::driver::pigpio::local class.
-#ifndef ADS101X___DRIVER___PIGPIO___LOCAL_H
-#define ADS101X___DRIVER___PIGPIO___LOCAL_H
+/// \file ads101x/pigpio/driver.hpp
+/// \brief Defines the ads101x::pigio::driver class.
+#ifndef ADS101X___PIGPIO___DRIVER_H
+#define ADS101X___PIGPIO___DRIVER_H
 
 // ads101x
 #include <ads101x/driver.hpp>

@@ -1,4 +1,4 @@
-/// \file ads101x/driver/driver.hpp
+/// \file ads101x/driver.hpp
 /// \brief Defines the ads101x::driver class.
 #ifndef ADS101X___DRIVER_H
 #define ADS101X___DRIVER_H
@@ -69,12 +69,12 @@ protected:
     /// \exception std::runtime_error if the I2C session fails to close.
     virtual void close_i2c() = 0;
     /// \brief Writes two bytes to an ADS1015 register over I2C.
-    /// \param addresss The address of the register to write.
+    /// \param register_address The address of the register to write.
     /// \param value The value to write.
     /// \exception std::runtime_error if the I2C write fails.
     virtual void write_register(uint8_t register_address, uint16_t value) const = 0;
     /// \brief Reads two bytes from an ADS1015 register over I2C.
-    /// \param address The address of the register to read.
+    /// \param register_address The address of the register to read.
     /// \returns The read value.
     /// \exception std::runtime_error if the I2C read fails.
     virtual uint16_t read_register(uint8_t register_address) const = 0;
