@@ -6,20 +6,20 @@ project(ads101x
     DESCRIPTION "A driver for the TI ADS101X family of analog-to-digital converters.")
 
 # OPTIONS
-option(BASE "Specifies if the base library will be built" OFF)
-option(PIGPIO "Specifies if the pigpio library will be built" OFF)
-option(PIGPIOD "Specifies if the pigpiod library will be built" OFF)
-option(TESTS "Specifies if unit tests should be built" OFF)
+option(ADS101X_BASE "Specifies if the base library will be built" OFF)
+option(ADS101X_PIGPIO "Specifies if the pigpio library will be built" OFF)
+option(ADS101X_PIGPIOD "Specifies if the pigpiod library will be built" OFF)
+option(ADS101X_TESTS "Specifies if unit tests should be built" OFF)
 
-# TEST
-if(TESTS)
+# ADS101X_TEST
+if(ADS101X_TESTS)
     # Print that tests are being built.
     message("-- Build tests: ON")
     # Find dependencies.
     find_package(GTest REQUIRED)
 endif()
 
-# BASE
+# ADS101X_BASE
 # Specify base source files.
 set(base_sources
     src/configuration.cpp
@@ -29,7 +29,7 @@ set(base_test_sources
     test/main.cpp
     test/configuration.cpp
     test/driver.cpp)
-if(BASE)
+if(ADS101X_BASE)
     # Print that base library is begin built.
     message("-- Build base library: ON")
     # Create library.
@@ -38,7 +38,7 @@ if(BASE)
     target_include_directories(${PROJECT_NAME}_base PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include)
     # Check if building tests.
-    if(TESTS)
+    if(ADS101X_TESTS)
         # Create test executable.
         add_executable(${PROJECT_NAME}_base_test ${base_test_sources})
         # Link dependencies.
@@ -48,8 +48,8 @@ if(BASE)
     endif()
 endif()
 
-# PIGPIO
-if(PIGPIO)
+# ADS101X_PIGPIO
+if(ADS101X_PIGPIO)
     # Print that pigpio library is begin built.
     message("-- Build pigpio library: ON")
     # Find pigpio library.
@@ -66,7 +66,7 @@ if(PIGPIO)
     target_include_directories(${PROJECT_NAME}_pigpio PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include)
     # Check if building tests.
-    if(TESTS)
+    if(ADS101X_TESTS)
         # Create test executable.
         add_executable(${PROJECT_NAME}_pigpio_test
             ${base_test_sources}
@@ -78,8 +78,8 @@ if(PIGPIO)
     endif()
 endif()
 
-# PIGPIOD
-if(PIGPIOD)
+# ADS101X_PIGPIOD
+if(ADS101X_PIGPIOD)
     # Print that pigpiod library is begin built.
     message("-- Build pigpiod library: ON")
     # Find pigpiod library.
@@ -97,7 +97,7 @@ if(PIGPIOD)
     target_include_directories(${PROJECT_NAME}_pigpiod PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include)
     # Check if building tests.
-    if(TESTS)
+    if(ADS101X_TESTS)
         # Create test executable.
         add_executable(${PROJECT_NAME}_pigpiod_test
             ${base_test_sources}
