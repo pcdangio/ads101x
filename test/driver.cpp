@@ -82,6 +82,7 @@ TEST(driver, start)
     EXPECT_EQ(driver.i2c_bus, i2c_bus);
     EXPECT_EQ(driver.i2c_address, static_cast<uint8_t>(i2c_address));
     EXPECT_TRUE(driver.i2c_opened);
+    EXPECT_TRUE(driver.i2c_closed);
 }
 TEST(driver, stop)
 {

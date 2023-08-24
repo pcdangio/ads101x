@@ -5,6 +5,9 @@ using namespace ads101x;
 // CONTROL
 void driver::start(uint32_t i2c_bus, ads101x::slave_address slave_address)
 {
+    // Close I2C if necessary.
+    close_i2c();
+    
     // Open I2C.
     open_i2c(i2c_bus, static_cast<uint8_t>(slave_address));
 }
