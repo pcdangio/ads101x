@@ -158,7 +158,7 @@ void alert_rdy_callback(bool level)
 TEST(pigpio, alert_rdy)
 {
     // Create driver.
-    ads101x::pigpiod::driver driver;
+    ads101x::pigpiod::driver driver(pigpiod_handle);
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
