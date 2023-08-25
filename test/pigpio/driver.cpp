@@ -4,9 +4,6 @@
 // gtest
 #include <gtest/gtest.h>
 
-// pigpio
-#include <pigpio.h>
-
 // PARAMATERS
 // NOTE: These may be overridden by compiler options.
 #ifndef TEST_I2C_BUS
@@ -18,12 +15,6 @@
 #ifndef TEST_ALERT_RDY_PIN
 #define TEST_ALERT_RDY_PIN 25
 #endif
-
-// ALERT_RDY CALLBACK
-void alert_rdy_callback(bool level)
-{
-    std::cout << "alert_rdy callback: " << level << std::endl;
-}
 
 // INITIALIZE
 TEST(pigpio, initialize)
@@ -145,6 +136,10 @@ TEST(pigpio, hi_thresh)
 }
 
 // ALERT_RDY
+void alert_rdy_callback(bool level)
+{
+    std::cout << "alert_rdy callback: " << level << std::endl;
+}
 TEST(pigpio, alert_rdy)
 {
     // Create driver.
@@ -152,10 +147,6 @@ TEST(pigpio, alert_rdy)
 
     // Start the driver.
     driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
-
-    // Set input mode for ALERT_RDY pin.
-    gpioSetMode(TEST_ALERT_RDY_PIN, PI_INPUT);
-    gpioSetPullUpDown(TEST_ALERT_RDY_PIN, PI_PUD_UP);
 
     // Attach alert_rdy callback.
     driver.attach_alert_rdy(TEST_ALERT_RDY_PIN, &alert_rdy_callback);

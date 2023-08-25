@@ -89,10 +89,16 @@ uint16_t driver::read_register(uint8_t register_address) const
 // ALERT_RDY
 void driver::attach_interrupt(uint16_t pin)
 {
-    // Try to attach interrupt.
-    int32_t result = gpioSetAlertFuncEx(pin, &driver::interrupt_callback, this);
+    // Try to set pin to input mode.
+    int32_t result = gpioSetMode(pin, PI_INPUT);
+    ads101x::pigpio::error(result);
 
-    // Handle error if present.
+    // Try to set pin input pullup.
+    result = gpioSetPullUpDown(pin, PI_PUD_UP);
+    ads101x::pigpio::error(result);
+
+    // Try to attach interrupt.
+    result = gpioSetAlertFuncEx(pin, &driver::interrupt_callback, this);
     ads101x::pigpio::error(result);
 }
 void driver::detach_interrupt(uint16_t pin)
