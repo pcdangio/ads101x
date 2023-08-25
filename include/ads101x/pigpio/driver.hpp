@@ -24,10 +24,10 @@ public:
     /// \brief Initializes the pigpio library for use.
     /// \details Use this convenience function to initialize pigpio if not already done elsewhere in the application.
     /// \exception std::runtime_error if initialization fails.
-    void initialize_pigpio();
+    void pigpio_initialize();
     /// \brief Terminates the pigpio library and frees resources.
     /// \details Use this convenience function to terminate pigpio if not already done elsewhere in the application.
-    void terminate_pigpio();
+    void pigpio_terminate();
 
 private:
     // I2C

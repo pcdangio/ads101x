@@ -22,7 +22,7 @@ driver::~driver()
 }
 
 // PIGPIO
-void driver::initialize_pigpio()
+void driver::pigpio_initialize()
 {
     // Try to initialize the library.
     int32_t result = gpioInitialise();
@@ -30,7 +30,7 @@ void driver::initialize_pigpio()
     // Handle error if present.
     ads101x::pigpio::error(result);
 }
-void driver::terminate_pigpio()
+void driver::pigpio_terminate()
 {
     // Terminate the library.
     gpioTerminate();

@@ -23,7 +23,7 @@ TEST(pigpio, initialize)
     ads101x::pigpio::driver driver;
 
     // Initialize pigpio.
-    driver.initialize_pigpio();
+    driver.pigpio_initialize();
 }
 
 // CONFIGURATION
@@ -182,5 +182,5 @@ TEST(pigpio, terminate)
     ads101x::pigpio::driver driver;
 
     // Terminate pigpio.
-    driver.terminate_pigpio();
+    driver.pigpio_terminate();
 }
