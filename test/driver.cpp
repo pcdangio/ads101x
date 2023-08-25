@@ -17,7 +17,10 @@ struct test_driver
           write_address(0),
           write_value(0),
           read_address(0),
-          read_value(0)
+          read_value(0),
+          interrupt_pin_attach(0),
+          interrupt_pin_detach(0),
+          interrupt_attached(false)
     {}
 
     // OVERRIDES
@@ -49,6 +52,28 @@ struct test_driver
         // Return read value.
         return test_driver::read_value;
     }
+    void attach_interrupt(uint16_t pin) override
+    {
+        // Store interrupt pin.
+        test_driver::interrupt_pin_attach = pin;
+
+        // Flag interrupt attached.
+        test_driver::interrupt_attached = true;
+    }
+    void detach_interrupt(uint16_t pin) override
+    {
+        // Store interrupt pin.
+        test_driver::interrupt_pin_detach = pin;
+
+        // Flag interrupt attached.
+        test_driver::interrupt_attached = false;
+    }
+
+    // ALERT_RDY
+    void simulate_interrupt(uint16_t pin, bool level)
+    {
+        test_driver::raise_interrupt(pin, level);
+    }
 
     // STATE: I2C
     uint32_t i2c_bus;
@@ -63,7 +88,18 @@ struct test_driver
     // STATE: READ
     mutable uint8_t read_address;
     mutable uint16_t read_value;
+
+    // STATE: INTERRUPT
+    mutable uint16_t interrupt_pin_attach;
+    mutable uint16_t interrupt_pin_detach;
+    mutable bool interrupt_attached;
 };
+
+// ALERT_RDY
+void alert_rdy_callback(bool level, bool* output)
+{
+    *output = level;
+}
 
 // CONTROL
 TEST(driver, start)
@@ -226,4 +262,39 @@ TEST(driver, read_hi_thresh)
 
     // Verify read value.
     EXPECT_EQ(threshold, threshold_value);
+}
+
+// ALERT_RDY
+TEST(driver, alert_rdy)
+{
+    // Create test driver.
+    test_driver driver;
+
+    // Specify ALERT_RDY pin.
+    uint32_t alert_rdy_pin = 8;
+
+    // Create output level for capturing callback result.
+    bool level_output = false;
+
+    // Attach alert_rdy callback.
+    driver.attach_alert_rdy(alert_rdy_pin, std::bind(&alert_rdy_callback, std::placeholders::_1, &level_output));
+
+    // Verify that interrupt is attached.
+    EXPECT_EQ(driver.interrupt_pin_attach, alert_rdy_pin);
+    EXPECT_TRUE(driver.interrupt_attached);
+
+    // Simulate rising edge interrupt and verify callback raised.
+    driver.simulate_interrupt(alert_rdy_pin, true);
+    EXPECT_TRUE(level_output);
+
+    // Simulate falling edge interrupt and verify callback raised.
+    driver.simulate_interrupt(alert_rdy_pin, false);
+    EXPECT_FALSE(level_output);
+
+    // Detach alert_rdy.
+    driver.detach_alert_rdy();
+
+    // Verify that interrupt is detached.
+    EXPECT_EQ(driver.interrupt_pin_detach, alert_rdy_pin);
+    EXPECT_FALSE(driver.interrupt_attached);
 }

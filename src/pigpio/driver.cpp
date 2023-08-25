@@ -22,7 +22,7 @@ driver::~driver()
 }
 
 // PIGPIO
-void driver::initialize_pigpio()
+void driver::pigpio_initialize()
 {
     // Try to initialize the library.
     int32_t result = gpioInitialise();
@@ -30,7 +30,7 @@ void driver::initialize_pigpio()
     // Handle error if present.
     ads101x::pigpio::error(result);
 }
-void driver::terminate_pigpio()
+void driver::pigpio_terminate()
 {
     // Terminate the library.
     gpioTerminate();
@@ -84,4 +84,48 @@ uint16_t driver::read_register(uint8_t register_address) const
 
     // Extract 16-bit value from result, handling endianness.
     return be16toh(static_cast<uint16_t>(result));
+}
+
+// ALERT_RDY
+void driver::attach_interrupt(uint16_t pin)
+{
+    // Try to set pin to input mode.
+    int32_t result = gpioSetMode(pin, PI_INPUT);
+    ads101x::pigpio::error(result);
+
+    // Try to set pin input pullup.
+    result = gpioSetPullUpDown(pin, PI_PUD_UP);
+    ads101x::pigpio::error(result);
+
+    // Try to attach interrupt.
+    result = gpioSetAlertFuncEx(pin, &driver::interrupt_callback, this);
+    ads101x::pigpio::error(result);
+}
+void driver::detach_interrupt(uint16_t pin)
+{
+    // Try to detach interrupt.
+    int32_t result = gpioSetAlertFuncEx(pin, nullptr, nullptr);
+
+    // Handle error if present.
+    ads101x::pigpio::error(result);
+}
+void driver::interrupt_callback(int32_t pin, int32_t level, uint32_t tick, void* data)
+{
+    // Verify level is not a watchdog timeout.
+    if(level == 2)
+    {
+        return;
+    }
+
+    // Convert user data to driver instance.
+    ads101x::pigpio::driver* driver = reinterpret_cast<ads101x::pigpio::driver*>(data);
+
+    // Verify driver instance.
+    if(!driver)
+    {
+        return;
+    }
+
+    // Raise interrupt on driver.
+    driver->raise_interrupt(pin, level);
 }

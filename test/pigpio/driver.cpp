@@ -12,6 +12,9 @@
 #ifndef TEST_I2C_ADDRESS
 #define TEST_I2C_ADDRESS 0x48
 #endif
+#ifndef TEST_ALERT_RDY_PIN
+#define TEST_ALERT_RDY_PIN 25
+#endif
 
 // INITIALIZE
 TEST(pigpio, initialize)
@@ -20,7 +23,7 @@ TEST(pigpio, initialize)
     ads101x::pigpio::driver driver;
 
     // Initialize pigpio.
-    driver.initialize_pigpio();
+    driver.pigpio_initialize();
 }
 
 // CONFIGURATION
@@ -132,6 +135,46 @@ TEST(pigpio, hi_thresh)
     driver.stop();
 }
 
+// ALERT_RDY
+void alert_rdy_callback(bool level)
+{
+    std::cout << "alert_rdy callback: " << level << std::endl;
+}
+TEST(pigpio, alert_rdy)
+{
+    // Create driver.
+    ads101x::pigpio::driver driver;
+
+    // Start the driver.
+    driver.start(TEST_I2C_BUS, static_cast<ads101x::slave_address>(TEST_I2C_ADDRESS));
+
+    // Attach alert_rdy callback.
+    driver.attach_alert_rdy(TEST_ALERT_RDY_PIN, &alert_rdy_callback);
+
+    // Write lo_thresh/hi_thresh to put alert_rdy into conversion ready mode.
+    driver.write_hi_thresh(0b0000100000000000);
+    driver.write_lo_thresh(0b0000000000000000);
+
+    // Create configuration for single shot.
+    ads101x::configuration config;
+    config.set_operation(ads101x::configuration::operation::CONVERT);
+    config.set_multiplexer(ads101x::configuration::multiplexer::AIN0_GND);
+    config.set_fsr(ads101x::configuration::fsr::FSR_6_114);
+    config.set_data_rate(ads101x::configuration::data_rate::SPS_128);
+
+    // Start conversion.
+    driver.write_config(config);
+
+    // Wait for conversion to finish.
+    usleep(50000);
+
+    // Detach alert_rdy callback.
+    driver.detach_alert_rdy();
+
+    // Stop the driver.
+    driver.stop();
+}
+
 // TERMINATE
 TEST(pigpio, terminate)
 {
@@ -139,5 +182,5 @@ TEST(pigpio, terminate)
     ads101x::pigpio::driver driver;
 
     // Terminate pigpio.
-    driver.terminate_pigpio();
+    driver.pigpio_terminate();
 }

@@ -24,10 +24,10 @@ public:
     /// \brief Initializes the pigpio library for use.
     /// \details Use this convenience function to initialize pigpio if not already done elsewhere in the application.
     /// \exception std::runtime_error if initialization fails.
-    void initialize_pigpio();
+    void pigpio_initialize();
     /// \brief Terminates the pigpio library and frees resources.
     /// \details Use this convenience function to terminate pigpio if not already done elsewhere in the application.
-    void terminate_pigpio();
+    void pigpio_terminate();
 
 private:
     // I2C
@@ -35,6 +35,16 @@ private:
     void close_i2c() override;
     void write_register(uint8_t register_address, uint16_t value) const override;
     uint16_t read_register(uint8_t register_address) const override;
+
+    // ALERT_RDY
+    void attach_interrupt(uint16_t pin) override;
+    void detach_interrupt(uint16_t pin) override;
+    /// \brief The callback for pigpio alert interrupts.
+    /// \param pin The GPIO pin associated with the alert.
+    /// \param level The level change.
+    /// \param tick The timestamp of the alert.
+    /// \param data User data to pass into the callback.
+    static void interrupt_callback(int32_t pin, int32_t level, uint32_t tick, void* data);
 
     // HANDLES
     /// \brief Stores the handle for an open I2C connection.

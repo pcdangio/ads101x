@@ -8,6 +8,7 @@
 
 // std
 #include <string>
+#include <unordered_map>
 
 namespace ads101x {
 /// \brief Contains all code for ADS101X drivers built on the pigpiod library.
@@ -45,11 +46,24 @@ private:
     void write_register(uint8_t register_address, uint16_t value) const override;
     uint16_t read_register(uint8_t register_address) const override;
 
+    // ALERT_RDY
+    void attach_interrupt(uint16_t pin) override;
+    void detach_interrupt(uint16_t pin) override;
+    /// \brief The callback for pigpio alert interrupts.
+    /// \param daemon_handle The handle for the pigpio daemon connection raising the callback.
+    /// \param pin The GPIO pin associated with the alert.
+    /// \param level The level change.
+    /// \param tick The timestamp of the alert.
+    /// \param data User data to pass into the callback.
+    static void interrupt_callback(int32_t daemon_handle, uint32_t pin, uint32_t level, uint32_t tick, void* data);
+
     // HANDLES
-    /// \brief Store the handle for an open pigpio daemon connection.
+    /// \brief Stores the handle for an open pigpio daemon connection.
     int32_t m_daemon_handle;
     /// \brief Stores the handle for an open I2C connection.
     int32_t m_i2c_handle;
+    /// \brief Stores the interrupt callback handles.
+    std::unordered_map<uint16_t, int32_t> m_callback_handles;
 };
 
 }}
