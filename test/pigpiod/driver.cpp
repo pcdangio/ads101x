@@ -155,7 +155,7 @@ void alert_rdy_callback(bool level)
 {
     std::cout << "alert_rdy callback: " << level << std::endl;
 }
-TEST(pigpio, alert_rdy)
+TEST(pigpiod, alert_rdy)
 {
     // Create driver.
     ads101x::pigpiod::driver driver(pigpiod_handle);
