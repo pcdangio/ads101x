@@ -84,16 +84,27 @@ uint16_t driver::read_hi_thresh() const
 }
 
 // ALERT_RDY
-void driver::attach_interrupt(uint32_t pin) const
+void driver::attach_interrupt(uint16_t pin)
 {
     // Default / non-overridden function does not support interrupts.
     throw std::runtime_error("driver does not support interrupts");
 }
-void driver::detach_interrupt(uint32_t pin) const
+void driver::detach_interrupt(uint16_t pin)
 {
     // Default / non-overriden function does nothing.
 }
-void driver::attach_alert_rdy(uint32_t pin, std::function<void(bool)> callback)
+void driver::raise_interrupt(uint16_t pin, bool level)
+{
+    // Validate alert_rdy attached, pin, and callback.
+    if(!driver::m_alert_rdy_attached || pin != driver::m_alert_rdy_pin || !driver::m_alert_rdy_callback)
+    {
+        return;
+    }
+
+    // Raise the alert_rdy callback.
+    driver::m_alert_rdy_callback(level);
+}
+void driver::attach_alert_rdy(uint16_t pin, std::function<void(bool)> callback)
 {
     // Verify callback.
     if(!callback)
@@ -132,15 +143,4 @@ void driver::detach_alert_rdy()
 
     // Flag alert_rdy as not attached.
     driver::m_alert_rdy_attached = false;
-}
-void driver::raise_alert_rdy(bool level)
-{
-    // Check if attached and validate callback.
-    if(!driver::m_alert_rdy_attached || !driver::m_alert_rdy_callback)
-    {
-        return;
-    }
-
-    // Raise the alert_rdy callback.
-    driver::m_alert_rdy_callback(level);
 }

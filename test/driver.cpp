@@ -52,7 +52,7 @@ struct test_driver
         // Return read value.
         return test_driver::read_value;
     }
-    void attach_interrupt(uint32_t pin) const override
+    void attach_interrupt(uint16_t pin) override
     {
         // Store interrupt pin.
         test_driver::interrupt_pin_attach = pin;
@@ -60,7 +60,7 @@ struct test_driver
         // Flag interrupt attached.
         test_driver::interrupt_attached = true;
     }
-    void detach_interrupt(uint32_t pin) const override
+    void detach_interrupt(uint16_t pin) override
     {
         // Store interrupt pin.
         test_driver::interrupt_pin_detach = pin;
@@ -70,9 +70,9 @@ struct test_driver
     }
 
     // ALERT_RDY
-    void simulate_interrupt(bool level)
+    void simulate_interrupt(uint16_t pin, bool level)
     {
-        test_driver::raise_alert_rdy(level);
+        test_driver::raise_interrupt(pin, level);
     }
 
     // STATE: I2C
@@ -90,8 +90,8 @@ struct test_driver
     mutable uint16_t read_value;
 
     // STATE: INTERRUPT
-    mutable uint32_t interrupt_pin_attach;
-    mutable uint32_t interrupt_pin_detach;
+    mutable uint16_t interrupt_pin_attach;
+    mutable uint16_t interrupt_pin_detach;
     mutable bool interrupt_attached;
 };
 
@@ -284,11 +284,11 @@ TEST(driver, alert_rdy)
     EXPECT_TRUE(driver.interrupt_attached);
 
     // Simulate rising edge interrupt and verify callback raised.
-    driver.simulate_interrupt(true);
+    driver.simulate_interrupt(alert_rdy_pin, true);
     EXPECT_TRUE(level_output);
 
     // Simulate falling edge interrupt and verify callback raised.
-    driver.simulate_interrupt(false);
+    driver.simulate_interrupt(alert_rdy_pin, false);
     EXPECT_FALSE(level_output);
 
     // Detach alert_rdy.

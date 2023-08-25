@@ -70,7 +70,7 @@ public:
     /// \param pin The GPIO pin that is attached to the ADS101X ALERT_RDY pin.
     /// \param callback The callback to raise when the ALERT_RDY pin changes state.
     /// \exception std::runtime_error if attach operation fails.
-    void attach_alert_rdy(uint32_t pin, std::function<void(bool)> callback);
+    void attach_alert_rdy(uint16_t pin, std::function<void(bool)> callback);
     /// \brief Detaches from the ALERT_RDY notification.
     /// \exception std::runtime_error if the detach operation fails.
     void detach_alert_rdy();
@@ -100,14 +100,15 @@ protected:
     /// \brief Attaches a state-change interrupt to a GPIO pin.
     /// \param pin The GPIO pin to attach the interrupt to.
     /// \exception std::runtime_error if the attach operation fails.
-    virtual void attach_interrupt(uint32_t pin) const;
+    virtual void attach_interrupt(uint16_t pin);
     /// \brief Detaches an interrupt from a GPIO pin.
     /// \param pin The GPIO pin to detach the interrupt from.
     /// \exception std::runtime_error if the detach operation fails.
-    virtual void detach_interrupt(uint32_t pin) const;
-    /// \brief Raises the ALERT_RDY user callback.
-    /// \param level The current level of the ALERT_RDY pin.
-    void raise_alert_rdy(bool level);
+    virtual void detach_interrupt(uint16_t pin);
+    /// \brief Raises an interrupt for a GPIO pin state-change.
+    /// \param pin The GPIO pin that has changed state.
+    /// \param level The new level of the GPIO pin.
+    void raise_interrupt(uint16_t pin, bool level);
 
 private:
     // ALERT_RDY
