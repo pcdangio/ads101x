@@ -26,6 +26,11 @@ void ads101x::pigpio::error(int32_t result)
             message += "failed to initialize library";
             break;
         }
+        case PI_BAD_USER_GPIO:
+        {
+            message += "invalid gpio pin specified";
+            break;
+        }
         case PI_NOT_INITIALISED:
         {
             message += "library is not initialized";

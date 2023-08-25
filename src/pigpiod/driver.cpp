@@ -107,3 +107,58 @@ uint16_t driver::read_register(uint8_t register_address) const
     // Extract 16-bit value from result, handling endianness.
     return be16toh(static_cast<uint16_t>(result));
 }
+
+void driver::attach_interrupt(uint16_t pin)
+{
+    // Try to set the pin for input.
+    int32_t result = set_mode(driver::m_daemon_handle, pin, PI_INPUT);
+    ads101x::pigpiod::error(result);
+
+    // Try to set the input pin to pull-up.
+    result = set_pull_up_down(driver::m_daemon_handle, pin, PI_PUD_UP);
+    ads101x::pigpiod::error(result);
+
+    // Try to attach interrupt.
+    result = callback_ex(driver::m_daemon_handle, pin, EITHER_EDGE, &driver::interrupt_callback, this);
+    ads101x::pigpiod::error(result);
+
+    // Store the callback handle for the pin.
+    driver::m_callback_handles[pin] = result;
+}
+void driver::detach_interrupt(uint16_t pin)
+{
+    // Try to find the pin in the interrupt callback handle map.
+    auto handle_entry = driver::m_callback_handles.find(pin);
+    if(handle_entry == driver::m_callback_handles.end())
+    {
+        // Pin does not have an interrupt callback, no need to detach.
+        return;
+    }
+
+    // Try to detach interrupt using pin's interrupt callback handle.
+    int32_t result = callback_cancel(handle_entry->second);
+    ads101x::pigpiod::error(result);
+
+    // Remove the entry from the callback handle map.
+    driver::m_callback_handles.erase(handle_entry);
+}
+void driver::interrupt_callback(int32_t daemon_handle, uint32_t pin, uint32_t level, uint32_t tick, void* data)
+{
+    // Verify level is not a watchdog timeout.
+    if(level == 2)
+    {
+        return;
+    }
+
+    // Convert user data to driver instance.
+    ads101x::pigpiod::driver* driver = reinterpret_cast<ads101x::pigpiod::driver*>(data);
+
+    // Verify driver instance.
+    if(!driver)
+    {
+        return;
+    }
+
+    // Raise interrupt on driver.
+    driver->raise_interrupt(pin, level);
+}
