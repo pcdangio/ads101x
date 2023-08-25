@@ -105,6 +105,12 @@ void driver::detach_interrupt(uint16_t pin)
 }
 void driver::interrupt_callback(int32_t pin, int32_t level, uint32_t tick, void* data)
 {
+    // Verify level is not a watchdog timeout.
+    if(level == 2)
+    {
+        return;
+    }
+
     // Convert user data to driver instance.
     ads101x::pigpio::driver* driver = reinterpret_cast<ads101x::pigpio::driver*>(data);
 
