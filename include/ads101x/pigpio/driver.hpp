@@ -36,6 +36,16 @@ private:
     void write_register(uint8_t register_address, uint16_t value) const override;
     uint16_t read_register(uint8_t register_address) const override;
 
+    // ALERT_RDY
+    void attach_interrupt(uint16_t pin) override;
+    void detach_interrupt(uint16_t pin) override;
+    /// \brief The callback for pigpio alert interrupts.
+    /// \param pin The GPIO pin associated with the alert.
+    /// \param level The level change.
+    /// \param tick The timestamp of the alert.
+    /// \param data User data to pass into the callback.
+    static void interrupt_callback(int32_t pin, int32_t level, uint32_t tick, void* data);
+
     // HANDLES
     /// \brief Stores the handle for an open I2C connection.
     int32_t m_i2c_handle;
