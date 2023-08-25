@@ -185,6 +185,9 @@ TEST(pigpio, alert_rdy)
 
     // Detach alert_rdy callback.
     driver.detach_alert_rdy();
+
+    // Stop the driver.
+    driver.stop();
 }
 
 // DISCONNECT
